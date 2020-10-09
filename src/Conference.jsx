@@ -113,6 +113,24 @@ class Conference extends React.Component {
 
   };
 
+    /**
+   * Request Picture in Picture of Video.
+   * 
+   * @param {HTMLVideoElement} videoElement
+   * @returns {undefined}
+   */
+  enterPictureInPicture = (videoElement) => {
+    alert(videoElement);
+    try {
+        if (document.pictureInPictureElement) {
+            document.exitPictureInPicture();
+        }
+        videoElement.requestPictureInPicture();
+    } catch(err) {
+        console.error(err);
+    }
+  }
+
   handleScreenSharing = async enabled => {
     let { localScreen } = this.state;
     const { client, settings } = this.props;
@@ -136,6 +154,7 @@ class Conference extends React.Component {
       }
     }
     this.setState({ localScreen });
+    this.enterPictureInPicture(document.getElementsByClassName("local-video-size"));
   };
 
   _stopMediaStream = async (stream) => {
