@@ -57,10 +57,10 @@ class Conference extends React.Component {
 
   muteMediaTrack = (type, enabled) => {
     let { localStream } = this.state;
-    if(!localStream) {
+    if (!localStream) {
       return
     }
-    if(enabled) {
+    if (enabled) {
       localStream.unmute(type)
     } else {
       localStream.mute(type)
@@ -78,21 +78,21 @@ class Conference extends React.Component {
     const { client, settings } = this.props;
     console.log("Settings===========");
     console.log(settings);
-   
+
     try {
       if (enabled) {
-	//if (settings.selectedVideoDevice) {
-	//	videoObj = { deviceId: settings.selectedVideoDevice }
-	//} else {
-	//	videoObj = true
-	//}
+        //if (settings.selectedVideoDevice) {
+        //	videoObj = { deviceId: settings.selectedVideoDevice }
+        //} else {
+        //	videoObj = true
+        //}
         localStream = await LocalStream.getUserMedia({
           codec: settings.codec.toUpperCase(),
           resolution: settings.resolution,
           bandwidth: settings.bandwidth,
           audio: true,
-          video:  { deviceId: settings.selectedVideoDevice },
-	  //video: true,
+          video: { deviceId: settings.selectedVideoDevice },
+          //video: true,
         });
         await client.publish(localStream);
       } else {
@@ -113,21 +113,21 @@ class Conference extends React.Component {
 
   };
 
-    /**
-   * Request Picture in Picture of Video.
-   * 
-   * @param {HTMLVideoElement} videoElement
-   * @returns {undefined}
-   */
+  /**
+ * Request Picture in Picture of Video.
+ * 
+ * @param {HTMLVideoElement} videoElement
+ * @returns {undefined}
+ */
   enterPictureInPicture = (videoElement) => {
-    alert(videoElement);
+    //alert(videoElement);
     try {
-        if (document.pictureInPictureElement) {
-            document.exitPictureInPicture();
-        }
-        videoElement.requestPictureInPicture();
-    } catch(err) {
-        console.error(err);
+      if (document.pictureInPictureElement) {
+        document.exitPictureInPicture();
+      }
+      videoElement.requestPictureInPicture();
+    } catch (err) {
+      console.error(err);
     }
   }
 
@@ -154,7 +154,17 @@ class Conference extends React.Component {
       }
     }
     this.setState({ localScreen });
-    this.enterPictureInPicture(document.getElementsByClassName("local-video-size"));
+    //this.enterPictureInPicture(document.getElementsByClassName("local-video-size"));
+    let isPiPSupported = 'pictureInPictureEnabled' in document,
+      isPiPEnabled = document.pictureInPictureEnabled;
+    if (!isPiPSupported) {
+      alert('The Picture-in-Picture Web API is not available.');
+    }
+    else {
+      alert('PIP is available.');
+      console.log("Doc feature:", document.getElementsByClassName("local-video-size")[0]);
+      this.enterPictureInPicture(document.getElementsByClassName("local-video-size")[0]);
+    }
   };
 
   _stopMediaStream = async (stream) => {
@@ -228,33 +238,33 @@ class Conference extends React.Component {
           return index == 0 ? (
             <MainVideoView key={item.mid} id={item.mid} stream={item.stream} vidFit={vidFit} />
           ) : (
-            ""
-          );
+              ""
+            );
         })}
         {localStream && (
           <div className="conference-local-video-layout">
-              <LocalVideoView
-                id={id + "-video"}
-                label="Local Stream"
-                client={client}
-                stream={localStream}
-                audioMuted={audioMuted}
-                videoMuted={videoMuted}
-                videoType="localVideo"
-              />
-            </div>
+            <LocalVideoView
+              id={id + "-video"}
+              label="Local Stream"
+              client={client}
+              stream={localStream}
+              audioMuted={audioMuted}
+              videoMuted={videoMuted}
+              videoType="localVideo"
+            />
+          </div>
         )}
         {localScreen && (
           <div className="conference-local-screen-layout">
-              <LocalVideoView
-                id={id + "-screen"}
-                label="Screen Sharing"
-                client={client}
-                stream={localScreen}
-                audioMuted={false}
-                videoMuted={false}
-                videoType="localScreen"
-              />
+            <LocalVideoView
+              id={id + "-screen"}
+              label="Screen Sharing"
+              client={client}
+              stream={localScreen}
+              audioMuted={false}
+              videoMuted={false}
+              videoType="localScreen"
+            />
           </div>
         )}
         <div className="small-video-list-div">
@@ -271,8 +281,8 @@ class Conference extends React.Component {
                   onClick={this._onChangeVideoPosition}
                 />
               ) : (
-                <div />
-              );
+                  <div />
+                );
             })}
           </div>
         </div>
