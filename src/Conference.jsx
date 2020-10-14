@@ -1,6 +1,6 @@
 import React from "react";
 import { Spin, notification } from "antd";
-import { LocalVideoView, MainVideoView, SmallVideoView } from "./videoview";
+import { LocalVideoView, MainVideoView, SmallVideoView, DrawArea } from "./videoview";
 import { Client, LocalStream, RemoteStream } from 'brytecam-sdk-js';
 import "../styles/css/conference.scss";
 
@@ -200,64 +200,8 @@ class Conference extends React.Component {
     const id = client.uid;
     return (
       <div className="conference-layout">
-        {streams.length === 0 && (
-          <div className="conference-layout-wating">
-            <Spin size="large" tip="Wait for other people joining ..." />
-          </div>
-        )}
-        {streams.map((item, index) => {
-          return index == 0 ? (
-            <MainVideoView key={item.mid} id={item.mid} stream={item.stream} vidFit={vidFit} />
-          ) : (
-            ""
-          );
-        })}
-        {localStream && (
-          <div className="conference-local-video-layout">
-              <LocalVideoView
-                id={id + "-video"}
-                label="Local Stream"
-                client={client}
-                stream={localStream}
-                audioMuted={audioMuted}
-                videoMuted={videoMuted}
-                videoType="localVideo"
-              />
-            </div>
-        )}
-        {localScreen && (
-          <div className="conference-local-screen-layout">
-              <LocalVideoView
-                id={id + "-screen"}
-                label="Screen Sharing"
-                client={client}
-                stream={localScreen}
-                audioMuted={false}
-                videoMuted={false}
-                videoType="localScreen"
-              />
-          </div>
-        )}
-        <div className="small-video-list-div">
-          <div className="small-video-list">
-            {streams.map((item, index) => {
-              return index > 0 ? (
-                <SmallVideoView
-                  key={item.mid}
-                  id={item.mid}
-                  stream={item.stream}
-                  videoCount={streams.length}
-                  collapsed={this.props.collapsed}
-                  index={index}
-                  onClick={this._onChangeVideoPosition}
-                />
-              ) : (
-                <div />
-              );
-            })}
-          </div>
-        </div>
-      </div>
+        <DrawArea />
+      </div>    
     );
   };
 }

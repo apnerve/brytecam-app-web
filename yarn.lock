@@ -1810,6 +1810,18 @@ browserslist@^4.12.0, browserslist@^4.8.5:
     node-releases "^1.1.53"
     pkg-up "^2.0.0"
 
+brytecam-sdk-js@^0.1.0:
+  version "0.1.0"
+  resolved "https://registry.yarnpkg.com/brytecam-sdk-js/-/brytecam-sdk-js-0.1.0.tgz#e5af335813039e58b47e9cbcb1599004e43c610d"
+  integrity sha512-p2Ck9Huld8rRnAkKnlHWKN6nimzkukrbK1ofSZ1hJwsUZflMT2KqrRhOSb0EZY1ggIgtVLgtRNGrB4INTD1LOg==
+  dependencies:
+    events "^3.0.0"
+    lodash "^4.17.15"
+    loglevel "^1.6.7"
+    protoo-client "^4.0.3"
+    sdp-transform "^2.13.0"
+    uuid "^8.0.0"
+
 buffer-from@^1.0.0:
   version "1.1.1"
   resolved "https://registry.yarnpkg.com/buffer-from/-/buffer-from-1.1.1.tgz#32713bc028f75c02fdb710d7c7bcec1f2c6070ef"
@@ -3843,18 +3855,6 @@ invert-kv@^2.0.0:
   version "2.0.0"
   resolved "https://registry.yarnpkg.com/invert-kv/-/invert-kv-2.0.0.tgz#7393f5afa59ec9ff5f67a27620d11c226e3eec02"
   integrity sha512-wPVv/y/QQ/Uiirj/vh3oP+1Ww+AWehmi1g5fFWGPF6IpCBCDVrhgHRMvrLfdYcwDh3QJbGXDW4JAuzxElLSqKA==
-
-ion-sdk-js@^0.3.7:
-  version "0.3.7"
-  resolved "https://registry.yarnpkg.com/ion-sdk-js/-/ion-sdk-js-0.3.7.tgz#2e7b5a7929b636f31be2ad720b46c1e6efeff978"
-  integrity sha512-KF6Z7n9t6HsUBUHf/ZGStK7cwIMROLWeHTO2jrqBq8MwE0dD+mAa8HRGuNWW5SVK2GlvCmRLZicQk65TnP4iag==
-  dependencies:
-    events "^3.0.0"
-    lodash "^4.17.15"
-    loglevel "^1.6.7"
-    protoo-client "^4.0.3"
-    sdp-transform "^2.13.0"
-    uuid "^8.0.0"
 
 ip-regex@^2.1.0:
   version "2.1.0"
