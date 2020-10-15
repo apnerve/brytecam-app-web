@@ -200,7 +200,7 @@ class Conference extends React.Component {
     const id = client.uid;
     return (
       <div className="conference-layout">
-        <DrawArea />
+        <DrawArea/>
       </div>    
     );
   };

@@ -7,13 +7,16 @@ class DrawArea extends React.Component {
 
         this.state = {
             lines: new Immutable.List(),
-            isDrawing: false
+            isDrawing: false,
+            color: "black",
         };
 
         this.handleMouseDown = this.handleMouseDown.bind(this);
         this.handleMouseMove = this.handleMouseMove.bind(this);
         this.handleMouseUp = this.handleMouseUp.bind(this);
     }
+
+    pathStyleColour = "red";
 
     componentDidMount() {
         document.addEventListener("mouseup", this.handleMouseUp);
@@ -56,8 +59,12 @@ class DrawArea extends React.Component {
         const boundingRect = this.refs.drawArea.getBoundingClientRect();
         return new Immutable.Map({
             x: mouseEvent.clientX - boundingRect.left,
-            y: mouseEvent.clientY - boundingRect.top,
+            y: mouseEvent.clientY - boundingRect.top - 30,
         });
+    }
+
+    handleColourChange(colour) {
+        this.pathStyleColour = colour;
     }
 
     render() {
@@ -67,7 +74,10 @@ class DrawArea extends React.Component {
                 ref="drawArea"
                 onMouseDown={this.handleMouseDown}
                 onMouseMove={this.handleMouseMove}
-            >
+            >   
+                <button id="board-black" onClick={this.handleColourChange("black")}></button>
+                <button id="board-red" onClick={this.handleColourChange("red")}></button>
+                <button id="board-blue" onClick={this.handleColourChange("blue")}></button>
                 <Drawing lines={this.state.lines} />
             </div>
         );
@@ -92,7 +102,7 @@ function DrawingLine({ line }) {
             })
             .join(" L ");
 
-    return <path className="path" d={pathData} />;
+    return <path className="path" d={pathData} style={{stroke: "red"}}/>;
 }
 
 export default DrawArea;
