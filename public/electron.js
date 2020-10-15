@@ -9,6 +9,10 @@ let mainWindow;
 
 function createWindow() {
   mainWindow = new BrowserWindow({width: 900, height: 680});
+  mainWindow.loadURL(url.format({
+	          pathname: '../dist/index.html',
+	          slashes: true
+	      }));
   mainWindow.on('closed', () => mainWindow = null);
 }
 
