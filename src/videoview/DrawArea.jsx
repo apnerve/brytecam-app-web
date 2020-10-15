@@ -1,5 +1,5 @@
 import React from "react";
-import Immutable from 'immutable';
+import Immutable from "immutable";
 
 class DrawArea extends React.Component {
     constructor() {
@@ -8,12 +8,14 @@ class DrawArea extends React.Component {
         this.state = {
             lines: new Immutable.List(),
             isDrawing: false,
-            color: "black",
+            color: "blue",
         };
 
         this.handleMouseDown = this.handleMouseDown.bind(this);
         this.handleMouseMove = this.handleMouseMove.bind(this);
         this.handleMouseUp = this.handleMouseUp.bind(this);
+        this.handleColourChange = this.handleColourChange.bind(this);
+        // this.DrawingLine = this.DrawingLine.bind(this);
     }
 
     pathStyleColour = "red";
@@ -63,11 +65,13 @@ class DrawArea extends React.Component {
         });
     }
 
-    handleColourChange(colour) {
-        this.pathStyleColour = colour;
+    handleColourChange = (color) => {
+        this.setState({
+            color: color
+        });
     }
 
-    render() {
+    render = () => {
         return (
             <div
                 className="drawArea"
@@ -75,34 +79,33 @@ class DrawArea extends React.Component {
                 onMouseDown={this.handleMouseDown}
                 onMouseMove={this.handleMouseMove}
             >   
-                <button id="board-black" onClick={this.handleColourChange("black")}></button>
-                <button id="board-red" onClick={this.handleColourChange("red")}></button>
-                <button id="board-blue" onClick={this.handleColourChange("blue")}></button>
-                <Drawing lines={this.state.lines} />
+                <button id="board-black" onClick={() => this.handleColourChange("black")}></button>
+                <button id="board-red" onClick={() => this.handleColourChange("red")}></button>
+                <button id="board-blue" onClick={() => this.handleColourChange("blue")}></button>
+                <Drawing lines={this.state.lines} color={this.state.color}/>
             </div>
         );
     }
 }
 
-function Drawing({ lines }) {
+function Drawing({ lines, color}) {
     return (
         <svg className="drawing">
             {lines.map((line, index) => (
-                <DrawingLine key={index} line={line} />
+                <DrawingLine key={index} line={line} color={color}/>
             ))}
         </svg>
     );
 }
 
-function DrawingLine({ line }) {
+function DrawingLine({ line, color }) {
     const pathData = "M " +
         line
             .map(p => {
                 return `${p.get('x')} ${p.get('y')}`;
             })
             .join(" L ");
-
-    return <path className="path" d={pathData} style={{stroke: "red"}}/>;
+    return <path className="path" d={pathData} style={{stroke: color}}/>;
 }
 
 export default DrawArea;
