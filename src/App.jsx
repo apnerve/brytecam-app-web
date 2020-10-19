@@ -167,6 +167,12 @@ class App extends React.Component {
     this.setState({
       localAudioEnabled: enabled
     });
+    var info = {
+      "type": "transmit",
+      "body": this.state.localAudioEnabled,
+      "uid": this.state.loginInfo.displayName
+    };
+    this.client.broadcast(info);
     this.conference.muteMediaTrack("audio", enabled);
   };
 
@@ -253,7 +259,7 @@ class App extends React.Component {
     reactLocalStorage.setObject("settings", this._settings);
   }
 
-  _onMessageReceived = (data) => {
+  _handleTextMessage = (data) => {
     console.log('Received message:' + data.senderName + ":" + data.msg);
     let messages = this.state.messages;
     let uid = 1;
@@ -261,11 +267,24 @@ class App extends React.Component {
     this.setState({ messages });
   }
 
+  _onMessageReceived = (data) => {
+    if (data.type == "message") {
+      this._handleTextMessage(data.body);
+    }
+    else if (data.type == "transmit") {
+      console.log(data.body, data.uid);
+    }
+  }
+
   _onSendMessage = (data) => {
     console.log('Send message:' + data);
     var info =  {
-      "senderName":this.state.loginInfo.displayName,
-      "msg": data,
+      "type": "message",
+      "body": {
+        "senderName": this.state.loginInfo.displayName,
+        "msg": data
+      },
+      "uid": null
     };
     this.client.broadcast(info);
     let messages = this.state.messages;
