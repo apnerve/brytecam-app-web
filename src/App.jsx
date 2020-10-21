@@ -122,7 +122,7 @@ class App extends React.Component {
 
     client.on("broadcast", (mid, info) => {
       console.log("broadcast %s,%s!", mid,info);
-      this._onMessageReceived(info);
+      this._onMessageReceived(mid, info);
     });
 
     this.client = client;
@@ -163,16 +163,27 @@ class App extends React.Component {
     });
   };
 
+  _handleTransmit = (operation) => {
+    var info = {
+      "type": "TRANSMIT",
+      "body": {
+        "new-state": {
+          "localAudioEnabled": this.state.localAudioEnabled,
+          "localVideoEnabled": this.state.localVideoEnabled,
+          "screenSharingEnabled": this.state.screenSharingEnabled,
+        },
+        operation: operation,
+        timestamp: (new Date()).toJSON()
+      }
+    };
+    this.client.broadcast(info);
+  }
+
   _handleAudioTrackEnabled = enabled => {
     this.setState({
       localAudioEnabled: enabled
     });
-    var info = {
-      "type": "transmit",
-      "body": this.state.localAudioEnabled,
-      "uid": this.state.loginInfo.displayName
-    };
-    this.client.broadcast(info);
+    this._handleTransmit("localAudioEnabled");
     this.conference.muteMediaTrack("audio", enabled);
   };
 
@@ -180,6 +191,7 @@ class App extends React.Component {
     this.setState({
       localVideoEnabled: enabled
     });
+    this._handleTransmit("localVideoEnabled");
     this.conference.muteMediaTrack("video", enabled);
   };
 
@@ -187,6 +199,7 @@ class App extends React.Component {
     this.setState({
       screenSharingEnabled: enabled
     });
+    this._handleTransmit("handleScreenSharing");
     this.conference.handleScreenSharing(enabled);
   };
 
@@ -267,24 +280,27 @@ class App extends React.Component {
     this.setState({ messages });
   }
 
-  _onMessageReceived = (data) => {
-    if (data.type == "message") {
-      this._handleTextMessage(data.body);
-    }
-    else if (data.type == "transmit") {
-      console.log(data.body, data.uid);
+  _onMessageReceived = (uid, data) => {
+    switch(data.type) {
+      case "TRANSMIT":
+        console.log(uid, data.body);
+        // Add task
+        break;
+      case "CHAT":
+        console.log(data.body);
+        this._handleTextMessage(data.body);
+        break;
     }
   }
 
   _onSendMessage = (data) => {
     console.log('Send message:' + data);
     var info =  {
-      "type": "message",
+      "type": "CHAT",
       "body": {
         "senderName": this.state.loginInfo.displayName,
         "msg": data
-      },
-      "uid": null
+      }
     };
     this.client.broadcast(info);
     let messages = this.state.messages;
