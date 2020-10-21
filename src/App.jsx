@@ -177,6 +177,7 @@ class App extends React.Component {
       }
     };
     this.client.broadcast(info);
+    console.log("AFTER TRANSMITTING", this.client.uid);
   }
 
   _handleAudioTrackEnabled = enabled => {

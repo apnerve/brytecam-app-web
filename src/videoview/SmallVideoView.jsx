@@ -26,6 +26,10 @@ class SmallVideoView extends React.Component {
     this.props.onClick({ id, index });
   };
 
+  _handleCommand = (uid) => {
+    console.log("FROM SMALL VIDEO VIEW", uid);
+  }
+
   render = () => {
     const { id, stream } = this.props;
 
@@ -43,6 +47,7 @@ class SmallVideoView extends React.Component {
         />
         <div className="small-video-id-div">
           <a className="small-video-id-a">{stream.info.name}</a>
+          <button onClick={() => {this._handleCommand(id)}}>Mute</button>
         </div>
       </div>
     );
